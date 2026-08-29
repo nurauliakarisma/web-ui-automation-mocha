@@ -76,7 +76,10 @@ describe("Login Automation Specs with Page Object Model", function () {
             userData.invalidPasswordUser.password
         );
 
-        await driver.sleep(1500);
+        // Explicit wait menunggu error toast muncul
+        const errorToast = await loginPage.waitForErrorToast();
+        assert.ok(await errorToast.isDisplayed());
+
         const currentUrl = await loginPage.getCurrentUrl();
         assert.strictEqual(currentUrl, loginPage.url);
     });
@@ -87,7 +90,10 @@ describe("Login Automation Specs with Page Object Model", function () {
             userData.unregisteredUser.password
         );
 
-        await driver.sleep(1500);
+        // Explicit wait menunggu error toast muncul
+        const errorToast = await loginPage.waitForErrorToast();
+        assert.ok(await errorToast.isDisplayed());
+
         const currentUrl = await loginPage.getCurrentUrl();
         assert.strictEqual(currentUrl, loginPage.url);
     });

@@ -67,8 +67,6 @@ describe("User Management Specs with Page Object Model", function () {
         await managementPage.navigateToUpdate();
         await managementPage.selectUserFromDropdown(usersData.addUser.username);
         await managementPage.fillUpdateAge("25");
-
-        await driver.sleep(1000);
     });
 
     it("should delete a user successfully", async function () {
@@ -76,7 +74,5 @@ describe("User Management Specs with Page Object Model", function () {
         await managementPage.selectUserFromDropdown(usersData.addUser.username);
         await managementPage.clickDeleteUser();
         await managementPage.handleBrowserConfirmAlert();
-
-        await driver.sleep(1500);
     });
 });

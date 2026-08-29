@@ -66,9 +66,8 @@ describe("Checkout Flow Specs with Page Object Model", function () {
         await checkoutPage.fillCustomerDetails(checkoutData.name, checkoutData.email, checkoutData.address);
         await checkoutPage.clickCancelCheckout();
 
-        await driver.sleep(500);
-        const currentUrl = await driver.getCurrentUrl();
-        assert.strictEqual(currentUrl, checkoutPage.cartUrl);
+        const currentUrl = await checkoutPage.cartUrl;
+        assert.strictEqual(await driver.getCurrentUrl(), currentUrl);
     });
 
     it("should display error message when captcha is answered incorrectly", async function () {

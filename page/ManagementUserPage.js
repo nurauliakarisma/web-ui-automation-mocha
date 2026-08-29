@@ -1,4 +1,4 @@
-const { until } = require("selenium-webdriver");
+const { until, By } = require("selenium-webdriver");
 const ManagementUserLocator = require("../locator/ManagementUser.locator");
 
 class ManagementUserPage {
@@ -65,7 +65,9 @@ class ManagementUserPage {
             this.timeout
         );
         await targetOption.click();
-        await this.driver.sleep(500);
+
+        // Explicit wait: tunggu sampai menu opsi dropdown tertutup
+        await this.driver.wait(until.stalenessOf(targetOption), 5000).catch(() => {});
     }
 
     async fillUpdateAge(newAge) {
@@ -75,6 +77,12 @@ class ManagementUserPage {
 
         const submitButton = await this.driver.findElement(ManagementUserLocator.submitButton);
         await submitButton.click();
+
+        // Explicit wait: tunggu toast notifikasi update muncul
+        await this.driver.wait(
+            until.elementLocated(By.xpath("//*[contains(@class, 'Toastify') or contains(text(), 'updated') or contains(text(), 'Success')]")),
+            this.timeout
+        );
     }
 
     async clickDeleteUser() {
@@ -89,6 +97,12 @@ class ManagementUserPage {
         await this.driver.wait(until.alertIsPresent(), 5000);
         const alert = await this.driver.switchTo().alert();
         await alert.accept();
+
+        // Explicit wait: tunggu toast notifikasi delete muncul
+        await this.driver.wait(
+            until.elementLocated(By.xpath("//*[contains(@class, 'Toastify') or contains(text(), 'deleted') or contains(text(), 'User')]")),
+            this.timeout
+        );
     }
 
     async getSuccessAddToastText() {

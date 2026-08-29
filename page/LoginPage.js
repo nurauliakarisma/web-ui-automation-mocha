@@ -1,4 +1,4 @@
-const { until } = require("selenium-webdriver");
+const { until, By } = require("selenium-webdriver");
 const LoginPageLocator = require("../locator/LoginPage.locator");
 
 class LoginPage {
@@ -52,6 +52,13 @@ class LoginPage {
             await this.enterPassword(password);
         }
         await this.clickLogin();
+    }
+
+    async waitForErrorToast() {
+        return await this.driver.wait(
+            until.elementLocated(By.xpath("//*[contains(@class, 'toast-error') or contains(@class, 'Toastify') or contains(text(), 'Invalid') or contains(text(), 'error')]")),
+            this.timeout
+        );
     }
 
     async getFormElement() {

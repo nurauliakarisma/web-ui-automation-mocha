@@ -13,7 +13,7 @@ class CheckoutPage {
             const cancelBtn = await this.driver.findElement(CheckoutPageLocator.cancelCheckoutButton);
             if (await cancelBtn.isDisplayed()) {
                 await cancelBtn.click();
-                await this.driver.sleep(500);
+                await this.driver.wait(until.elementIsNotVisible(cancelBtn), 5000).catch(() => {});
             }
         } catch (e) {
             // Modal is not open
@@ -135,11 +135,16 @@ class CheckoutPage {
     async clickCancelCheckout() {
         const cancelBtn = await this.driver.findElement(CheckoutPageLocator.cancelCheckoutButton);
         await cancelBtn.click();
+        await this.driver.wait(until.elementIsNotVisible(cancelBtn), 5000).catch(() => {});
     }
 
     async getSuccessMessageText() {
         const successElem = await this.driver.wait(
             until.elementLocated(CheckoutPageLocator.successMessage),
+            this.timeout
+        );
+        await this.driver.wait(
+            until.elementTextContains(successElem, "Checkout Successful!"),
             this.timeout
         );
         return await successElem.getText();
@@ -148,7 +153,7 @@ class CheckoutPage {
     async getCaptchaErrorElement() {
         return await this.driver.wait(
             until.elementLocated(CheckoutPageLocator.captchaError),
-            5000
+            this.timeout
         );
     }
 
